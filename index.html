@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>SAM Org Mind Map</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --ink:#0b0e1a; --ink2:#131729; --ink3:#1b2035; --ink4:#232845;
+  --glass:rgba(255,255,255,.04); --glass2:rgba(255,255,255,.07);
+  --rim:rgba(255,255,255,.08); --rim2:rgba(255,255,255,.13);
+  --gold:#e8b84b; --blue:#4a9eff; --blue2:#7bbfff;
+  --green:#2dd4a0; --green2:#6ee7c7;
+  --violet:#9b7bff; --amber:#ffb347;
+  --text:#f0f2f8; --text2:#a8b0cc; --text3:#5a637a; --text4:#363d55;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--ink);color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;min-height:100vh;overflow-x:auto;}
+body::before{content:'';position:fixed;inset:0;z-index:0;background:
+  radial-gradient(ellipse 60% 50% at 10% 0%,rgba(74,158,255,.07) 0%,transparent 55%),
+  radial-gradient(ellipse 50% 40% at 90% 100%,rgba(155,123,255,.07) 0%,transparent 55%),
+  radial-gradient(ellipse 40% 30% at 50% 50%,rgba(45,212,160,.03) 0%,transparent 60%);
+  pointer-events:none;}
+body::after{content:'';position:fixed;inset:0;z-index:0;
+  background-image:linear-gradient(rgba(255,255,255,.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.015) 1px,transparent 1px);
+  background-size:40px 40px;pointer-events:none;}
+
+/* Header */
+header{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;
+  padding:16px 40px;background:rgba(11,14,26,.94);backdrop-filter:blur(24px);border-bottom:1px solid var(--rim);}
+.logo-wrap{display:flex;align-items:center;gap:14px;}
+.logo-icon{width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,#2dd4a0,#4a9eff);
+  display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;
+  font-size:1rem;font-weight:900;color:var(--ink);box-shadow:0 4px 20px rgba(45,212,160,.3);flex-shrink:0;}
+/* UPRIO logo with shimmer colour sweep animation */
+.uprio-logo{
+  font-family:'Playfair Display',serif;
+  font-size:2.4rem;font-weight:700;
+  letter-spacing:-.01em;flex-shrink:0;
+  position:relative;display:inline-block;
+  padding:4px 0;
+}
+.uprio-text{
+  position:relative;z-index:1;
+  background:linear-gradient(
+    90deg,
+    #fff       0%,
+    #fff       35%,
+    #4a9eff   45%,
+    #2dd4a0   50%,
+    #4a9eff   55%,
+    #fff       65%,
+    #fff      100%
+  );
+  background-size:200% 100%;
+  background-position:100% 0;
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+  animation:uprioShine 8s ease-in-out infinite;
+}
+@keyframes uprioShine{
+  0%   { background-position:200% 0; }
+  40%  { background-position:200% 0; }
+  65%  { background-position:-200% 0; }
+  100% { background-position:-200% 0; }
+}
+.logo-text h1{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:var(--text);}
+.logo-text p{font-size:.68rem;color:var(--text3);margin-top:1px;letter-spacing:.03em;}
+.hdr-right{display:flex;align-items:center;gap:10px;}
+#sync-info{font-size:.65rem;color:var(--text3);text-align:right;line-height:1.5;}
+.btn{display:flex;align-items:center;gap:5px;padding:6px 14px;border-radius:8px;border:1px solid var(--rim2);
+  background:var(--glass2);color:var(--text2);font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:.72rem;font-weight:600;cursor:pointer;transition:all .2s;}
+.btn:hover{background:rgba(255,255,255,.1);color:var(--text);border-color:rgba(255,255,255,.2);}
+.btn:disabled{opacity:.4;cursor:not-allowed;}
+.spin{display:inline-block;transition:transform .6s;}
+.btn.loading .spin{animation:spinning .7s linear infinite;}
+@keyframes spinning{to{transform:rotate(360deg);}}
+
+/* Setup banner */
+#setup-banner{display:none;padding:14px 40px;background:rgba(232,184,75,.07);
+  border-bottom:1px solid rgba(232,184,75,.2);font-size:.75rem;color:#f5d07a;line-height:1.9;}
+#setup-banner.show{display:block;}
+#setup-banner strong{color:var(--gold);}
+#setup-banner code{background:rgba(232,184,75,.12);padding:1px 7px;border-radius:4px;font-size:.7rem;letter-spacing:.02em;}
+.setup-steps{margin-top:6px;display:flex;flex-direction:column;gap:4px;}
+.setup-step{display:flex;align-items:baseline;gap:8px;}
+.step-num{background:var(--gold);color:var(--ink);width:16px;height:16px;border-radius:50%;
+  display:inline-flex;align-items:center;justify-content:center;font-size:.55rem;font-weight:800;flex-shrink:0;}
+
+/* Dashboard */
+.dashboard{display:grid;grid-template-columns:repeat(7,1fr);border-bottom:1px solid var(--rim);background:rgba(19,23,41,.6);}
+.dash-cell{padding:16px 20px;border-right:1px solid var(--rim);position:relative;overflow:hidden;}
+.dash-cell:last-child{border-right:none;}
+.dash-cell::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;opacity:.5;}
+.dash-cell:nth-child(1)::after{background:var(--violet);}
+.dash-cell:nth-child(2)::after{background:var(--green);}
+.dash-cell:nth-child(3)::after{background:var(--blue);}
+.dash-cell:nth-child(4)::after{background:var(--violet);}
+.dash-cell:nth-child(5)::after{background:var(--amber);}
+.dash-cell:nth-child(6)::after{background:var(--amber);}
+.dash-cell:nth-child(7)::after{background:var(--gold);}
+.dash-num{font-family:'Playfair Display',serif;font-size:1.7rem;font-weight:700;line-height:1;}
+.dash-cell:nth-child(1) .dash-num{background:linear-gradient(135deg,#a78bfa,#7c6af5);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.dash-cell:nth-child(2) .dash-num{background:linear-gradient(135deg,#2dd4a0,#6ee7c7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.dash-cell:nth-child(3) .dash-num{background:linear-gradient(135deg,#4a9eff,#7bbfff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.dash-cell:nth-child(4) .dash-num{background:linear-gradient(135deg,#9b7bff,#c4b5fd);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.dash-cell:nth-child(5) .dash-num{background:linear-gradient(135deg,#ffb347,#ffd280);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.dash-cell:nth-child(6) .dash-num{background:linear-gradient(135deg,#ffb347,#ffd280);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.dash-cell:nth-child(7) .dash-num{background:linear-gradient(135deg,#e8b84b,#f5d07a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.dash-label{font-size:.58rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-top:5px;}
+
+/* Legend */
+.legend{display:flex;align-items:center;gap:18px;flex-wrap:wrap;padding:9px 40px;
+  border-bottom:1px solid var(--rim);background:rgba(11,14,26,.5);font-size:.66rem;}
+.li{display:flex;align-items:center;gap:5px;color:var(--text3);}
+.ld{width:8px;height:8px;border-radius:50%;}
+.lhint{margin-left:auto;color:var(--text4);font-style:italic;font-size:.63rem;}
+
+/* Canvas wrapper — grab-scrollable, scrollbar pinned to bottom of screen */
+.canvas-wrap{
+  overflow:auto;
+  cursor:grab;
+  user-select:none;
+  position:relative;
+  z-index:1;
+  width:100%;
+  height:calc(100vh - var(--header-h, 160px));
+  /* custom scrollbar — thin, sits at very bottom */
+  scrollbar-width:thin;
+  scrollbar-color:rgba(255,255,255,.15) transparent;
+}
+.canvas-wrap::-webkit-scrollbar{height:6px;width:6px;}
+.canvas-wrap::-webkit-scrollbar-track{background:transparent;}
+.canvas-wrap::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:10px;}
+.canvas-wrap::-webkit-scrollbar-thumb:hover{background:rgba(255,255,255,.28);}
+.canvas-wrap:active{cursor:grabbing;}
+.canvas-wrap.grabbing{cursor:grabbing;}
+
+/* Canvas inner */
+.canvas{
+  position:relative;
+  z-index:1;
+  padding:52px 80px 100px;
+  display:inline-flex;
+  flex-direction:column;
+  align-items:center;
+  min-width:max-content;
+  transform-origin:top left;
+  will-change:zoom;
+}
+
+/* HOD */
+.hod-node{position:relative;background:linear-gradient(145deg,#1e1340,#2a1a5e 50%,#1a2555);
+  border:1px solid rgba(155,123,255,.4);border-radius:20px;padding:20px 36px;text-align:center;min-width:260px;
+  box-shadow:0 0 0 1px rgba(155,123,255,.1),0 8px 40px rgba(155,123,255,.2),0 32px 80px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.08);
+  animation:popIn .5s cubic-bezier(.34,1.56,.64,1) both;}
+.hod-node::before{content:'HOD';position:absolute;top:-10px;left:50%;transform:translateX(-50%);
+  background:var(--violet);color:var(--ink);font-size:.54rem;font-weight:800;letter-spacing:.12em;padding:2px 10px;border-radius:20px;}
+.hod-name{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:var(--text);margin-top:4px;}
+.hod-role{font-size:.65rem;color:#c4b5fd;margin-top:3px;opacity:.8;}
+
+/* RM */
+.rm-row{display:flex;gap:120px;align-items:flex-start;justify-content:center;}
+.rm-branch{display:flex;flex-direction:column;align-items:center;}
+.rm-node{border-radius:16px;padding:16px 28px;text-align:center;min-width:220px;
+  animation:popIn .5s cubic-bezier(.34,1.56,.64,1) .15s both;}
+.rm-node.g{background:linear-gradient(145deg,#0f2547,#0d3580);border:1px solid rgba(74,158,255,.35);
+  box-shadow:0 8px 32px rgba(74,158,255,.15),inset 0 1px 0 rgba(255,255,255,.06);}
+.rm-node.r{background:linear-gradient(145deg,#0a2d22,#0b4535);border:1px solid rgba(45,212,160,.35);
+  box-shadow:0 8px 32px rgba(45,212,160,.12),inset 0 1px 0 rgba(255,255,255,.06);}
+.rm-tag{font-size:.54rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;opacity:.7;margin-bottom:4px;}
+.rm-node.g .rm-tag{color:var(--blue2);}
+.rm-node.r .rm-tag{color:var(--green2);}
+.rm-name{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;}
+.rm-sub{font-size:.62rem;color:var(--text3);margin-top:3px;}
+
+/* Office card */
+.offices-row{display:flex;gap:10px;align-items:flex-start;justify-content:center;}
+.ofc-col{display:flex;flex-direction:column;align-items:center;opacity:0;animation:popIn .4s ease both;}
+.offices-row .ofc-col:nth-child(1){animation-delay:.20s} .offices-row .ofc-col:nth-child(2){animation-delay:.23s}
+.offices-row .ofc-col:nth-child(3){animation-delay:.26s} .offices-row .ofc-col:nth-child(4){animation-delay:.29s}
+.offices-row .ofc-col:nth-child(5){animation-delay:.32s} .offices-row .ofc-col:nth-child(6){animation-delay:.35s}
+.offices-row .ofc-col:nth-child(7){animation-delay:.38s} .offices-row .ofc-col:nth-child(8){animation-delay:.41s}
+
+.office-card{width:178px;background:var(--glass);border:1px solid var(--rim);border-radius:14px;
+  cursor:pointer;transition:transform .2s,box-shadow .2s,border-color .2s,background .2s;overflow:hidden;position:relative;}
+.office-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;}
+.office-card.g::before{background:linear-gradient(90deg,var(--blue),var(--blue2));}
+.office-card.r::before{background:linear-gradient(90deg,var(--green),var(--green2));}
+.office-card:hover{transform:translateY(-3px);border-color:var(--rim2);background:var(--glass2);box-shadow:0 16px 48px rgba(0,0,0,.35);}
+.office-card.open{border-color:rgba(45,212,160,.25);background:var(--glass2);box-shadow:0 0 0 1px rgba(45,212,160,.1),0 12px 40px rgba(0,0,0,.3);}
+
+.card-head{padding:12px 13px 10px;}
+.office-name{font-size:.73rem;font-weight:700;color:var(--text);letter-spacing:-.01em;}
+.samm-pill{display:inline-flex;align-items:center;gap:5px;font-size:.58rem;padding:3px 8px;border-radius:20px;
+  margin-top:6px;font-weight:600;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.pip{width:5px;height:5px;border-radius:50%;flex-shrink:0;}
+.pill-a{background:rgba(45,212,160,.12);border:1px solid rgba(45,212,160,.3);color:var(--green);}
+.pill-a .pip{background:var(--green);}
+.pill-t{background:rgba(90,99,122,.15);border:1px solid rgba(90,99,122,.25);color:var(--text3);}
+.pill-t .pip{background:var(--text3);}
+.pill-y{background:rgba(255,179,71,.12);border:1px solid rgba(255,179,71,.3);color:var(--amber);}
+.pill-y .pip{background:var(--amber);animation:pulse 1.5s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+.card-bar{padding:0 13px 10px;}
+.prog-track{background:rgba(255,255,255,.05);border-radius:4px;height:4px;overflow:hidden;}
+.prog-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--green),var(--blue));transition:width .8s cubic-bezier(.4,0,.2,1);}
+.card-meta{display:flex;justify-content:space-between;align-items:center;margin-top:5px;}
+.card-count{font-size:.58rem;color:var(--text3);font-weight:500;}
+.card-arrow{font-size:.55rem;color:var(--text4);transition:transform .25s;}
+.office-card.open .card-arrow{transform:rotate(180deg);color:var(--green);}
+
+/* Team panel */
+.team-panel{overflow:hidden;max-height:0;transition:max-height .4s cubic-bezier(.4,0,.2,1);border-top:1px solid transparent;}
+.team-panel.open{max-height:1400px;border-top-color:var(--rim);}
+.team-inner{padding:8px 10px 10px;}
+.sec-head{display:flex;justify-content:space-between;align-items:center;
+  padding:4px 3px 3px;font-size:.52rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  border-bottom:1px solid rgba(255,255,255,.04);margin-bottom:3px;}
+.sec-head.sam{color:#5a9fd4;border-color:rgba(74,158,255,.15);}
+.sec-head.asam{color:#8b72d4;border-color:rgba(155,123,255,.15);}
+.sec-cnt{font-weight:400;opacity:.7;}
+.sec-gap{margin-top:7px;}
+.mrow{display:flex;align-items:center;gap:6px;padding:3px 4px;border-radius:6px;transition:background .15s;}
+.mrow:hover{background:var(--glass);}
+.mdot{width:5px;height:5px;border-radius:50%;flex-shrink:0;}
+.mname{flex:1;font-size:.62rem;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:500;}
+.mname.open-slot{color:var(--text4);font-weight:400;font-style:italic;}
+.mtag{font-size:.5rem;padding:1px 6px;border-radius:10px;flex-shrink:0;font-weight:600;}
+.mtag-a{background:rgba(45,212,160,.1);color:#2dd4a0;}
+.mtag-y{background:rgba(255,179,71,.1);color:#ffb347;}
+.mtag-t{background:rgba(90,99,122,.1);color:#5a637a;}
+
+.vl{width:1px;margin:0 auto;}
+@keyframes popIn{from{opacity:0;transform:translateY(12px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+
+/* Loader */
+#page-loader{position:fixed;inset:0;background:var(--ink);z-index:500;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;transition:opacity .4s;}
+#page-loader.fade-out{opacity:0;pointer-events:none;}
+#page-loader.hidden{display:none;}
+.ring{width:44px;height:44px;border:3px solid rgba(255,255,255,.06);border-top-color:var(--green);
+  border-radius:50%;animation:spinning .8s linear infinite;}
+.loader-txt{font-family:'Playfair Display',serif;font-size:.95rem;color:var(--text2);}
+.loader-sub{font-size:.68rem;color:var(--text4);}
+</style>
+</head>
+<body>
+
+<div id="page-loader">
+  <div class="ring"></div>
+  <div class="loader-txt">Loading SAM Mind Map</div>
+  <div class="loader-sub" id="loader-sub">Connecting to Google Sheets…</div>
+</div>
+
+<header>
+  <div class="logo-wrap">
+    <!-- Uprio Logo -->
+    <div class="uprio-logo"><span class="uprio-text">UPRIO</span></div>
+    <div style="width:1px;height:32px;background:var(--rim);margin:0 4px;"></div>
+    <div class="logo-text">
+      <h1>SAM Org Mind Map</h1>
+      <p>School Account Manager · Hierarchy &amp; Hiring Status</p>
+    </div>
+  </div>
+  <div class="hdr-right">
+    <div id="sync-info">—</div>
+    <!-- Zoom controls -->
+    <div style="display:flex;align-items:center;gap:2px;background:var(--glass2);border:1px solid var(--rim2);border-radius:8px;padding:2px 4px;">
+      <button class="btn" style="border:none;background:none;padding:4px 8px;font-size:.9rem;" onclick="adjustZoom(-0.1)" title="Zoom Out">−</button>
+      <span id="zoom-label" style="font-size:.65rem;color:var(--text3);min-width:34px;text-align:center;font-family:'JetBrains Mono',monospace;">100%</span>
+      <button class="btn" style="border:none;background:none;padding:4px 8px;font-size:.9rem;" onclick="adjustZoom(0.1)" title="Zoom In">+</button>
+    </div>
+    <button class="btn" id="refresh-btn" onclick="loadData(true)">
+      <span class="spin">⟳</span> Refresh
+    </button>
+  </div>
+</header>
+
+<!-- Setup instructions — shown only when URL not yet configured -->
+<div id="setup-banner">
+  <strong>⚙ One-time setup required</strong> — paste your Google Apps Script URL to enable live sync from Google Sheets.
+  <div class="setup-steps">
+    <div class="setup-step"><span class="step-num">1</span> Open your Google Sheet → <strong>Extensions → Apps Script</strong></div>
+    <div class="setup-step"><span class="step-num">2</span> Delete any existing code → paste the full contents of <strong>Code.gs</strong> → Save (Ctrl+S)</div>
+    <div class="setup-step"><span class="step-num">3</span> Click <strong>Deploy → New Deployment</strong> → Type: <strong>Web App</strong> → Execute as: <strong>Me</strong> → Who has access: <strong>Anyone</strong> → Deploy</div>
+    <div class="setup-step"><span class="step-num">4</span> Copy the Web App URL → open this HTML file in a text editor → replace <code>PASTE_YOUR_APPS_SCRIPT_URL_HERE</code> with your URL → Save</div>
+    <div class="setup-step"><span class="step-num">5</span> Reload this page — it will now sync live from your sheet every 5 minutes ✅</div>
+  </div>
+</div>
+
+<div class="dashboard">
+  <div class="dash-cell"><div class="dash-num" id="d0">11</div><div class="dash-label">Total Offices</div></div>
+  <div class="dash-cell"><div class="dash-num" id="d1">—</div><div class="dash-label">SAMMs Onboard</div></div>
+  <div class="dash-cell"><div class="dash-num" id="d2">—</div><div class="dash-label">SAMs Active</div></div>
+  <div class="dash-cell"><div class="dash-num" id="d3">—</div><div class="dash-label">ASAMs Active</div></div>
+  <div class="dash-cell"><div class="dash-num" id="d5">—</div><div class="dash-label">SAMs Yet to Join</div></div>
+  <div class="dash-cell"><div class="dash-num" id="d6">—</div><div class="dash-label">ASAMs Yet to Join</div></div>
+  <div class="dash-cell"><div class="dash-num" id="d4">—</div><div class="dash-label">Overall Fill %</div></div>
+</div>
+
+<div class="legend">
+  <div class="li"><div class="ld" style="background:#9b7bff"></div>HOD</div>
+  <div class="li"><div class="ld" style="background:#4a9eff"></div>Gajender (RM)</div>
+  <div class="li"><div class="ld" style="background:#2dd4a0"></div>Rajamani (RM)</div>
+  <div class="li"><div class="ld" style="background:#2dd4a0"></div>SAMM</div>
+  <div class="li"><div class="ld" style="background:#4a9eff"></div>SAM</div>
+  <div class="li"><div class="ld" style="background:#9b7bff"></div>ASAM</div>
+  <div class="li"><div class="ld" style="background:#ffb347;box-shadow:0 0 5px #ffb347"></div>Yet to Join</div>
+  <div class="li"><div class="ld" style="background:#363d55"></div>Open / TBD</div>
+  <div class="lhint">Click any office card to expand team ▾</div>
+</div>
+
+<div class="canvas-wrap" id="canvas-wrap">
+  <div class="canvas" id="canvas"></div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════════════
+//  ▼▼  PASTE YOUR APPS SCRIPT WEB APP URL HERE AFTER DEPLOYING ▼▼
+// ══════════════════════════════════════════════════════════════
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzaRxatXgzGIufYYUeVND8up23JkPAEI8aW591eXJlgsWfiKjHmbZqvMA2_CFo2V8as/exec';
+// ══════════════════════════════════════════════════════════════
+
+// ── Static fallback data (from CSV — used while Apps Script not configured or on fetch failure) ──
+const mk  = (desig, n, status, doj) => ({ desig, n: n||'', status: status||'TBD', doj: doj||'' });
+const tbd = (desig) => mk(desig, '', 'TBD', '');
+const emp = (desig, count) => Array(count).fill(0).map(() => tbd(desig));
+
+const STATIC_OFFICES = [
+  { id:'blr1', name:'Bengaluru Office 1', rm:'gajender',
+    samm: mk('SAMM','Hemanth U','Active','19 Jan 2026'),
+    sams: [
+      mk('SAM','Bharath Gowda',   'Active','09 Feb 2026'),
+      mk('SAM','Devansh Tyagi',   'Active','10 Feb 2026'),
+      mk('SAM','Aman Singh',      'Active','13 Feb 2026'),
+      mk('SAM','B Sharath Kumar', 'Active','16 Feb 2026'),
+      mk('SAM','Suhan S',         'Active','16 Feb 2026'),
+      mk('SAM','Monil Shah',      'Active','24 Feb 2026'),
+      mk('SAM','AJAY N',          'Active','16 Feb 2026'),
+      tbd('SAM'),
+    ],
+    asams: emp('ASAM',6) },
+  { id:'blr2', name:'Bengaluru Office 2', rm:'gajender',
+    samm: tbd('SAMM'), sams: emp('SAM',8), asams: emp('ASAM',6) },
+  { id:'blr3', name:'Bengaluru Office 3', rm:'gajender',
+    samm: tbd('SAMM'), sams: emp('SAM',8), asams: emp('ASAM',6) },
+  { id:'noida', name:'Noida', rm:'gajender',
+    samm: mk('SAMM','Chinmay Singh','Active','14 Oct 2025'),
+    sams: [
+      mk('SAM','Ritik Raj',           'Active','14 Oct 2025'),
+      mk('SAM','Devansh Gupta',       'Active','04 Nov 2025'),
+      mk('SAM','Ayush Raina',         'Active','21 Nov 2025'),
+      mk('SAM','Sahil Sandhu',        'Active','01 Dec 2025'),
+      mk('SAM','Shovik Julka',        'Active','16 Dec 2025'),
+      mk('SAM','Aditya Pathak',       'Active','24 Dec 2025'),
+      mk('SAM','Aryan Yadav',         'Active','05 Jan 2026'),
+      mk('SAM','Thakur Virat Singh',  'Yet to join','06 Jan 2026'),
+    ],
+    asams: emp('ASAM',6) },
+  { id:'rohini', name:'Rohini', rm:'gajender',
+    samm: mk('SAMM','Aman Choudhary','Active',''),
+    sams: [
+      mk('SAM','Abhishek Tiwari',  'Active','21 Dec 2023'),
+      mk('SAM','Varun Dixit',      'Active','23 Aug 2024'),
+      mk('SAM','Aayush Panghal',   'Active','04 Sep 2024'),
+      mk('SAM','Aditya Gupta',     'Active','18 Nov 2024'),
+      mk('SAM','Kuljot Singh',     'Active','17 Mar 2025'),
+      mk('SAM','Himanshu Verma',   'Active','17 Mar 2025'),
+      mk('SAM','Akhilesh Agarwal', 'Active','01 Jul 2025'),
+      mk('SAM','Ankur Verma',      'Active','28 Aug 2025'),
+      mk('SAM','Firoz Raza Ansari','Active','02 Sep 2025'),
+      mk('SAM','Govind Varshney',  'Active','01 Sep 2025'),
+    ],
+    asams: emp('ASAM',6) },
+  { id:'gurgaon', name:'Gurgaon', rm:'gajender',
+    samm: mk('SAMM','Naman Tiwari','Active','18 Mar 2026'),
+    sams: emp('SAM',8), asams: emp('ASAM',6) },
+  { id:'dwarka', name:'Dwarka', rm:'gajender',
+    samm: mk('SAMM','Ravi Kumar','Active','12 Mar 2026'),
+    sams: emp('SAM',8), asams: emp('ASAM',6) },
+  { id:'delhi', name:'Delhi South', rm:'gajender',
+    samm: mk('SAMM','Suyasha Parth Singh','Active',''),
+    sams: emp('SAM',8), asams: emp('ASAM',6) },
+  { id:'chn1', name:'Chennai Office 1', rm:'rajamani',
+    samm: tbd('SAMM'),
+    sams: [
+      mk('SAM','Paramasivan Rajan','Active','09 Mar 2026'),
+      mk('SAM','Anish Kumar',      'Active','09 Mar 2026'),
+      mk('SAM','Rajkumar S',       'Active','09 Mar 2026'),
+      mk('SAM','Sathish Kumar R',  'Active','12 Mar 2026'),
+      mk('SAM','Akhay',            'Active','12 Mar 2026'),
+      tbd('SAM'), tbd('SAM'), tbd('SAM'),
+    ],
+    asams: emp('ASAM',6) },
+  { id:'chn2', name:'Chennai Office 2', rm:'rajamani',
+    samm: mk('SAMM','Aakash B','Yet to join','01 Apr 2026'),
+    sams: emp('SAM',8), asams: emp('ASAM',6) },
+  { id:'hyd1', name:'Hyderabad Office 1', rm:'rajamani',
+    samm: mk('SAMM','Maganti Vishnuvardhan','Active','18 Mar 2026'),
+    sams: emp('SAM',8), asams: emp('ASAM',6) },
+  { id:'hyd2', name:'Hyderabad Office 2', rm:'rajamani',
+    samm: mk('SAMM','Akshith Mashetty','Active','18 Mar 2026'),
+    sams: emp('SAM',8), asams: emp('ASAM',6) },
+];
+
+// ── Date helpers ──────────────────────────────────────────────
+const TODAY = (() => { const d = new Date(); d.setHours(0,0,0,0); return d; })();
+
+function parseDate(s) {
+  if (!s) return null;
+  const str = String(s).trim();
+  if (!str || str.toUpperCase() === 'TBD' || str === '-') return null;
+  const d1 = new Date(str);
+  if (!isNaN(d1)) return d1;
+  const m1 = str.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/);
+  if (m1) return new Date(+m1[3], +m1[2]-1, +m1[1]);
+  return null;
+}
+const isUpcoming = s => { const d = parseDate(s); return !!(d && d > TODAY); };
+const fmtDate    = s => {
+  const d = parseDate(s);
+  return d ? d.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'}) : '';
+};
+
+// ── Status resolver ───────────────────────────────────────────
+function resolveStatus(name, statusCell, dojCell) {
+  const n = String(name || '').trim();
+  if (!n || n.toUpperCase() === 'TBD' || n === '-') return 't';
+  if (isUpcoming(dojCell)) return 'y';
+  const s = String(statusCell || '').trim().toLowerCase();
+  if (s === 'yet to join') return 'y';
+  if (s === 'tbd')         return 't';
+  return 'a';
+}
+
+// ── Render member row ─────────────────────────────────────────
+function renderMember(m, dotColor) {
+  const st = resolveStatus(m.n, m.status, m.doj);
+  let nameClass = 'mname', dn, tag, dot = dotColor;
+  if (st === 't') {
+    nameClass = 'mname open-slot'; dn = 'Yet to Join / TBD'; dot = 'var(--text4)';
+    tag = `<span class="mtag mtag-t">Open</span>`;
+  } else if (st === 'y') {
+    dn = m.n; dot = 'var(--amber)';
+    tag = `<span class="mtag mtag-y">YTJ · ${fmtDate(m.doj) || m.doj}</span>`;
+  } else {
+    dn = m.n;
+    tag = `<span class="mtag mtag-a">Active</span>`;
+  }
+  return `<div class="mrow">
+    <div class="mdot" style="background:${dot}"></div>
+    <div class="${nameClass}" title="${m.n || 'Open'}">${dn}</div>
+    ${tag}
+  </div>`;
+}
+
+// ── Render office card ────────────────────────────────────────
+function renderOffice(o) {
+  const oid = 'ofc_' + o.id;
+
+  // Pad slots: Rohini = 9 SAM + 6 ASAM = 16 total. All others = 8 SAM + 6 ASAM = 14 total.
+  const samSlots  = o.id === 'rohini' ? 9 : 8;
+  const asamSlots = 6;
+  const sams  = [...o.sams];
+  const asams = [...o.asams];
+  while (sams.length  < samSlots)  sams.push( { desig:'SAM',  n:'', status:'TBD', doj:'' });
+  while (asams.length < asamSlots) asams.push({ desig:'ASAM', n:'', status:'TBD', doj:'' });
+
+  const sammSt = resolveStatus(o.samm.n, o.samm.status, o.samm.doj);
+  let pill;
+  if      (sammSt === 't') pill = `<div class="samm-pill pill-t"><span class="pip"></span>SAMM: TBD</div>`;
+  else if (sammSt === 'y') pill = `<div class="samm-pill pill-y"><span class="pip"></span>SAMM: ${o.samm.n} &nbsp;·&nbsp; YTJ ${fmtDate(o.samm.doj)||o.samm.doj}</div>`;
+  else                     pill = `<div class="samm-pill pill-a"><span class="pip"></span>SAMM: ${o.samm.n}</div>`;
+
+  const sammOn  = sammSt === 'a' ? 1 : 0;
+  const sammYTJ = sammSt === 'y' ? 1 : 0;
+  const samOn   = sams.filter( m => resolveStatus(m.n, m.status, m.doj) === 'a').length;
+  const asamOn  = asams.filter(m => resolveStatus(m.n, m.status, m.doj) === 'a').length;
+  const ytjCount = sammYTJ
+    + sams.filter( m => resolveStatus(m.n, m.status, m.doj) === 'y').length
+    + asams.filter(m => resolveStatus(m.n, m.status, m.doj) === 'y').length;
+  const total  = sammOn + samOn + asamOn;
+  const slots  = 1 + sams.length + asams.length;
+  const pct    = Math.round((total / slots) * 100);
+  const rmClass = o.rm === 'gajender' ? 'g' : 'r';
+  const samRows  = sams.map( m => renderMember(m, 'var(--blue)')).join('');
+  const asamRows = asams.map(m => renderMember(m, 'var(--violet)')).join('');
+  const ytjPill  = ytjCount > 0
+    ? `<span style="font-size:.5rem;padding:1px 6px;border-radius:10px;background:rgba(255,179,71,.12);color:#ffb347;font-weight:600;display:inline-flex;align-items:center;gap:3px;"><span style="width:4px;height:4px;border-radius:50%;background:#ffb347;animation:pulse 1.5s infinite;display:inline-block;"></span>${ytjCount} YTJ</span>`
+    : '';
+
+  return `<div class="ofc-col">
+    <div class="vl" style="height:22px;background:linear-gradient(to bottom,rgba(255,255,255,.1),rgba(255,255,255,.03))"></div>
+    <div class="office-card ${rmClass}" id="${oid}" onclick="toggle('${oid}')">
+      <div class="card-head">
+        <div class="office-name">${o.name}</div>
+        ${pill}
+      </div>
+      <div class="card-bar">
+        <div class="prog-track"><div class="prog-fill" style="width:${pct}%"></div></div>
+        <div class="card-meta">
+          <span class="card-count">${total}/${slots} filled</span>
+          ${ytjPill}
+          <span class="card-arrow">▾</span>
+        </div>
+      </div>
+      <div class="team-panel" id="${oid}_panel">
+        <div class="team-inner">
+          <div class="sec-head sam">SAM <span class="sec-cnt">${samOn}/${sams.length}</span></div>
+          ${samRows}
+          <div class="sec-head asam sec-gap">ASAM <span class="sec-cnt">${asamOn}/${asams.length}</span></div>
+          ${asamRows}
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function toggle(id) {
+  document.getElementById(id).classList.toggle('open');
+  document.getElementById(id + '_panel').classList.toggle('open');
+}
+
+// ── Stats ─────────────────────────────────────────────────────
+function renderStats(offices) {
+  let samm=0, sam=0, asam=0, samYTJ=0, asamYTJ=0, fill=0, slots=0;
+  offices.forEach(o => {
+    const samSlots  = o.id === 'rohini' ? 9 : 8;
+    const asamSlots = 6;
+    const sams  = [...o.sams];  while(sams.length  < samSlots)  sams.push({n:'',status:'TBD',doj:''});
+    const asams = [...o.asams]; while(asams.length < asamSlots) asams.push({n:'',status:'TBD',doj:''});
+
+    const ss = resolveStatus(o.samm.n, o.samm.status, o.samm.doj);
+    if (ss === 'a') samm++;
+
+    const sActive  = sams.filter( m => resolveStatus(m.n, m.status, m.doj) === 'a').length;
+    const aActive  = asams.filter(m => resolveStatus(m.n, m.status, m.doj) === 'a').length;
+    const sYTJ     = sams.filter( m => resolveStatus(m.n, m.status, m.doj) === 'y').length;
+    const aYTJ     = asams.filter(m => resolveStatus(m.n, m.status, m.doj) === 'y').length;
+
+    sam     += sActive;
+    asam    += aActive;
+    samYTJ  += sYTJ;
+    asamYTJ += aYTJ;
+    fill    += (ss==='a'?1:0) + sActive + aActive;
+    slots   += 1 + sams.length + asams.length;
+  });
+  const pct = Math.round((fill / slots) * 100);
+  document.getElementById('d0').textContent = offices.length;
+  document.getElementById('d1').textContent = `${samm}/${offices.length}`;
+  document.getElementById('d2').textContent = sam;
+  document.getElementById('d3').textContent = asam;
+  document.getElementById('d5').textContent = samYTJ;
+  document.getElementById('d6').textContent = asamYTJ;
+  document.getElementById('d4').textContent = `${pct}%`;
+}
+
+// ── Build tree ────────────────────────────────────────────────
+function buildTree(offices) {
+  const gO = offices.filter(o => o.rm === 'gajender');
+  const rO = offices.filter(o => o.rm === 'rajamani');
+  const ofcRow = arr => `<div class="offices-row">${arr.map(renderOffice).join('')}</div>`;
+
+  document.getElementById('canvas').innerHTML = `
+    <!-- HOD — centred -->
+    <div class="hod-node">
+      <div class="hod-name">Mrinal Mohit</div>
+      <div class="hod-role">Head of Department · SAM Division</div>
+    </div>
+
+    <!-- Vertical drop from HOD -->
+    <div class="vl" style="height:36px;background:linear-gradient(to bottom,rgba(155,123,255,.5),rgba(155,123,255,.15))"></div>
+
+    <!-- Two branches side by side -->
+    <div id="rm-row-wrap" style="display:flex;align-items:flex-start;position:relative;">
+
+      <!-- GAJENDER branch -->
+      <div class="rm-branch" id="branch-gaj" style="padding:0 80px 0 0;">
+        <div id="vl-gaj" style="width:2px;height:28px;background:linear-gradient(to bottom,rgba(74,158,255,.5),rgba(74,158,255,.15));margin:0 auto;"></div>
+        <div class="rm-node g">
+          <div class="rm-tag">Regional Manager · North &amp; Bangalore</div>
+          <div class="rm-name">Gajender Singh Anand</div>
+          <div class="rm-sub">${gO.length} Offices under management</div>
+        </div>
+        <div class="vl" style="height:28px;background:linear-gradient(to bottom,rgba(74,158,255,.2),rgba(74,158,255,.04))"></div>
+        ${ofcRow(gO)}
+      </div>
+
+      <!-- RAJAMANI branch -->
+      <div class="rm-branch" id="branch-raj" style="padding:0 0 0 80px;">
+        <div id="vl-raj" style="width:2px;height:28px;background:linear-gradient(to bottom,rgba(45,212,160,.5),rgba(45,212,160,.15));margin:0 auto;"></div>
+        <div class="rm-node r">
+          <div class="rm-tag">Regional Manager · South</div>
+          <div class="rm-name">Rajamani Venketesh</div>
+          <div class="rm-sub">${rO.length} Offices under management</div>
+        </div>
+        <div class="vl" style="height:28px;background:linear-gradient(to bottom,rgba(45,212,160,.2),rgba(45,212,160,.04))"></div>
+        ${ofcRow(rO)}
+      </div>
+
+    </div>`;
+
+  // After render: draw the horizontal bridge line + centre the view
+  requestAnimationFrame(() => {
+    drawConnector();
+    const wrap = document.getElementById('canvas-wrap');
+    const canvas = document.getElementById('canvas');
+    if (wrap && canvas) {
+      const scrollX = (canvas.scrollWidth - wrap.clientWidth) / 2;
+      wrap.scrollLeft = Math.max(0, scrollX);
+    }
+  });
+}
+
+// ── Draw SVG connector line between the two RM vertical drops ──
+function drawConnector() {
+  // Remove any old connector
+  const old = document.getElementById('rm-connector');
+  if (old) old.remove();
+
+  const wrap   = document.getElementById('rm-row-wrap');
+  const gajVL  = document.getElementById('vl-gaj');
+  const rajVL  = document.getElementById('vl-raj');
+  if (!wrap || !gajVL || !rajVL) return;
+
+  const wrapRect = wrap.getBoundingClientRect();
+  const gRect    = gajVL.getBoundingClientRect();
+  const rRect    = rajVL.getBoundingClientRect();
+
+  // X positions of the two vertical lines (centre of each 2px line)
+  const x1 = gRect.left + gRect.width / 2 - wrapRect.left;
+  const x2 = rRect.left + rRect.width / 2 - wrapRect.left;
+  // Y = bottom of the vertical drops (they are both 28px tall)
+  const y  = gRect.bottom - wrapRect.top;
+
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svg.id = 'rm-connector';
+  svg.style.cssText = `position:absolute;top:0;left:0;width:${wrapRect.width}px;height:${y + 4}px;pointer-events:none;overflow:visible;`;
+
+  const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+  defs.innerHTML = `<linearGradient id="hgrad" x1="0%" y1="0%" x2="100%" y2="0%">
+    <stop offset="0%" stop-color="rgba(74,158,255,.6)"/>
+    <stop offset="50%" stop-color="rgba(155,123,255,.4)"/>
+    <stop offset="100%" stop-color="rgba(45,212,160,.6)"/>
+  </linearGradient>`;
+  svg.appendChild(defs);
+
+  const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+  line.setAttribute('x1', x1);
+  line.setAttribute('y1', y);
+  line.setAttribute('x2', x2);
+  line.setAttribute('y2', y);
+  line.setAttribute('stroke', 'url(#hgrad)');
+  line.setAttribute('stroke-width', '1');
+  svg.appendChild(line);
+
+  wrap.style.position = 'relative';
+  wrap.appendChild(svg);
+}
+
+// ── JSONP fetch — bypasses CORS for Google Apps Script ────────
+function fetchViaJSONP(url, timeoutMs = 10000) {
+  return new Promise((resolve, reject) => {
+    const cbName = '__sam_cb_' + Date.now();
+    const script  = document.createElement('script');
+    let   settled = false;
+    const cleanup = () => {
+      settled = true;
+      delete window[cbName];
+      if (script.parentNode) script.parentNode.removeChild(script);
+    };
+    window[cbName] = data => { cleanup(); resolve(data); };
+    script.onerror = () => { cleanup(); reject(new Error('Script load failed')); };
+    setTimeout(() => { if (!settled) { cleanup(); reject(new Error('Timeout')); } }, timeoutMs);
+    const sep = url.includes('?') ? '&' : '?';
+    script.src = url + sep + 'callback=' + cbName + '&_t=' + Date.now();
+    document.head.appendChild(script);
+  });
+}
+
+// ── Main load ─────────────────────────────────────────────────
+let refreshTimer = null;
+
+async function loadData(manual = false) {
+  const btn = document.getElementById('refresh-btn');
+  btn.classList.add('loading'); btn.disabled = true;
+
+  const isConfigured = APPS_SCRIPT_URL && APPS_SCRIPT_URL !== 'PLACEHOLDER';
+
+  if (!isConfigured) {
+    // Show setup instructions + use static data
+    document.getElementById('setup-banner').classList.add('show');
+    document.getElementById('loader-sub').textContent = 'Using static data…';
+    buildTree(STATIC_OFFICES);
+    renderStats(STATIC_OFFICES);
+    document.getElementById('sync-info').innerHTML =
+      `<span style="color:var(--gold)">⚙ Static data · Configure Apps Script for live sync</span>`;
+    hideLoader();
+    btn.classList.remove('loading'); btn.disabled = false;
+    return;
+  }
+
+  document.getElementById('setup-banner').classList.remove('show');
+  document.getElementById('loader-sub').textContent = 'Fetching from Google Sheets…';
+
+  try {
+    const json = await fetchViaJSONP(APPS_SCRIPT_URL);
+    if (json.error) throw new Error(json.error);
+    if (!json.offices || !json.offices.length) throw new Error('No office data returned');
+
+    buildTree(json.offices);
+    renderStats(json.offices);
+
+    const now = new Date();
+    document.getElementById('sync-info').innerHTML =
+      `<span style="color:var(--green)">● Live</span> · synced ${now.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})} · ${now.toLocaleDateString('en-IN',{day:'numeric',month:'short'})}`;
+
+  } catch(err) {
+    console.warn('Live fetch failed, using static data:', err.message);
+    buildTree(STATIC_OFFICES);
+    renderStats(STATIC_OFFICES);
+    document.getElementById('sync-info').innerHTML =
+      `<span style="color:var(--amber)">⚠ Live sync failed · Showing static data</span><br><span style="font-size:.6rem">${err.message}</span>`;
+  }
+
+  hideLoader();
+  btn.classList.remove('loading'); btn.disabled = false;
+
+  // Auto-refresh every 5 minutes
+  clearTimeout(refreshTimer);
+  refreshTimer = setTimeout(() => loadData(false), 5 * 60 * 1000);
+}
+
+// ── Grab-to-scroll ────────────────────────────────────────────
+function initGrabScroll() {
+  const wrap = document.getElementById('canvas-wrap');
+  if (!wrap) return;
+  let isDown = false, startX, startY, scrollLeft, scrollTop;
+
+  wrap.addEventListener('mousedown', e => {
+    // Don't grab if clicking on an office card toggle
+    if (e.target.closest('.office-card')) return;
+    isDown = true;
+    wrap.classList.add('grabbing');
+    startX     = e.pageX - wrap.offsetLeft;
+    startY     = e.pageY - wrap.offsetTop;
+    scrollLeft = wrap.scrollLeft;
+    scrollTop  = wrap.scrollTop;
+  });
+  wrap.addEventListener('mouseleave', () => { isDown = false; wrap.classList.remove('grabbing'); });
+  wrap.addEventListener('mouseup',    () => { isDown = false; wrap.classList.remove('grabbing'); });
+  wrap.addEventListener('mousemove',  e => {
+    if (!isDown) return;
+    e.preventDefault();
+    const x = e.pageX - wrap.offsetLeft;
+    const y = e.pageY - wrap.offsetTop;
+    wrap.scrollLeft = scrollLeft - (x - startX);
+    wrap.scrollTop  = scrollTop  - (y - startY);
+  });
+
+  // Touch support
+  let touchStartX, touchStartY, touchScrollLeft, touchScrollTop;
+  wrap.addEventListener('touchstart', e => {
+    touchStartX    = e.touches[0].pageX;
+    touchStartY    = e.touches[0].pageY;
+    touchScrollLeft = wrap.scrollLeft;
+    touchScrollTop  = wrap.scrollTop;
+  }, { passive: true });
+  wrap.addEventListener('touchmove', e => {
+    const dx = touchStartX - e.touches[0].pageX;
+    const dy = touchStartY - e.touches[0].pageY;
+    wrap.scrollLeft = touchScrollLeft + dx;
+    wrap.scrollTop  = touchScrollTop  + dy;
+  }, { passive: true });
+}
+
+// ── Set canvas height so scrollbar stays at bottom of screen ──
+function setCanvasHeight() {
+  const wrap = document.getElementById('canvas-wrap');
+  if (!wrap) return;
+  const top = wrap.getBoundingClientRect().top;
+  wrap.style.height = (window.innerHeight - top) + 'px';
+}
+setCanvasHeight();
+window.addEventListener('resize', setCanvasHeight);
+
+initGrabScroll();
+
+function hideLoader() {
+  const el = document.getElementById('page-loader');
+  el.classList.add('fade-out');
+  setTimeout(() => el.classList.add('hidden'), 450);
+}
+
+// ── Zoom ──────────────────────────────────────────────────────
+// Use CSS `zoom` (not transform:scale) so scrollable area expands correctly
+let currentZoom = 1;
+const ZOOM_MIN = 0.5, ZOOM_MAX = 1.5, ZOOM_STEP = 0.05;
+let wheelThrottle = false;
+
+function applyZoom(zoom) {
+  const canvas = document.getElementById('canvas');
+  if (!canvas) return;
+  canvas.style.zoom = zoom;
+  canvas.style.transform = '';
+  canvas.style.marginBottom = '';
+  document.getElementById('zoom-label').textContent = Math.round(zoom * 100) + '%';
+}
+
+function adjustZoom(delta) {
+  const newZoom = Math.min(ZOOM_MAX, Math.max(ZOOM_MIN,
+    Math.round((currentZoom + delta) * 100) / 100));
+  if (newZoom === currentZoom) return;
+  currentZoom = newZoom;
+  applyZoom(currentZoom);
+}
+
+// Throttled mouse wheel — prevent lag by skipping frames
+document.getElementById('canvas-wrap').addEventListener('wheel', e => {
+  e.preventDefault();
+  if (wheelThrottle) return;
+  wheelThrottle = true;
+  requestAnimationFrame(() => { wheelThrottle = false; });
+  // Small, smooth delta — reduce intensity vs raw deltaY
+  const delta = e.deltaY < 0 ? ZOOM_STEP : -ZOOM_STEP;
+  adjustZoom(delta);
+}, { passive: false });
+
+loadData();
+</script>
+</body>
+</html>
