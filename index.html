@@ -290,10 +290,137 @@ header{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify
 .mrow.has-detail{cursor:pointer;}
 .mrow.has-detail:hover{background:rgba(74,158,255,.1) !important;border-radius:6px;}
 .mrow.has-detail .mname{color:var(--blue) !important;text-decoration:underline;text-decoration-color:rgba(74,158,255,.4);text-underline-offset:2px;}
+/* ── Comment Panel ───────────────────────────────────────────── */
+#comment-panel{
+  position:fixed;top:0;right:-400px;width:380px;height:100vh;
+  background:linear-gradient(160deg,#0f1626,#111a2e);
+  border-left:1px solid var(--rim2);
+  z-index:200;
+  display:flex;flex-direction:column;
+  transition:right .3s cubic-bezier(.4,0,.2,1);
+  box-shadow:-8px 0 40px rgba(0,0,0,.5);
+}
+#comment-panel.open{right:0;}
+
+.cp-header{
+  padding:18px 20px 14px;
+  border-bottom:1px solid var(--rim);
+  display:flex;align-items:center;justify-content:space-between;
+  flex-shrink:0;
+}
+.cp-title{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:var(--text);}
+.cp-close{
+  width:28px;height:28px;border-radius:50%;
+  background:var(--glass2);border:1px solid var(--rim);
+  color:var(--text3);cursor:pointer;font-size:.85rem;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .15s;
+}
+.cp-close:hover{background:rgba(239,68,68,.15);border-color:rgba(239,68,68,.4);color:#f87171;}
+
+.cp-tabs{
+  display:flex;border-bottom:1px solid var(--rim);flex-shrink:0;
+}
+.cp-tab{
+  flex:1;padding:9px 0;font-size:.68rem;font-weight:600;
+  text-align:center;cursor:pointer;color:var(--text3);
+  border-bottom:2px solid transparent;transition:all .2s;
+}
+.cp-tab.active{color:var(--blue);border-bottom-color:var(--blue);}
+
+.cp-list{flex:1;overflow-y:auto;padding:12px 16px;display:flex;flex-direction:column;gap:10px;}
+.cp-list::-webkit-scrollbar{width:4px;}
+.cp-list::-webkit-scrollbar-thumb{background:var(--rim2);border-radius:4px;}
+
+.comment-card{
+  background:var(--glass);border:1px solid var(--rim);
+  border-radius:12px;padding:12px 14px;position:relative;
+  transition:border-color .2s;
+}
+.comment-card.done{
+  opacity:.55;
+  background:rgba(45,212,160,.04);
+  border-color:rgba(45,212,160,.2);
+}
+.cc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;}
+.cc-name{
+  font-size:.7rem;font-weight:700;color:var(--text);
+  display:flex;align-items:center;gap:6px;
+}
+.cc-avatar{
+  width:22px;height:22px;border-radius:50%;
+  background:linear-gradient(135deg,var(--blue),var(--violet));
+  display:flex;align-items:center;justify-content:center;
+  font-size:.6rem;font-weight:800;color:#fff;flex-shrink:0;
+}
+.cc-time{font-size:.56rem;color:var(--text4);}
+.cc-note{font-size:.68rem;color:var(--text2);line-height:1.5;margin-bottom:8px;word-break:break-word;}
+.cc-actions{display:flex;align-items:center;gap:6px;}
+.cc-done-btn{
+  font-size:.56rem;font-weight:700;padding:2px 8px;border-radius:20px;cursor:pointer;
+  border:1px solid rgba(45,212,160,.4);background:rgba(45,212,160,.08);color:var(--green);
+  transition:all .15s;
+}
+.cc-done-btn:hover{background:rgba(45,212,160,.2);}
+.cc-del-btn{
+  font-size:.56rem;font-weight:700;padding:2px 8px;border-radius:20px;cursor:pointer;
+  border:1px solid rgba(239,68,68,.3);background:rgba(239,68,68,.06);color:#f87171;
+  transition:all .15s;margin-left:auto;
+}
+.cc-del-btn:hover{background:rgba(239,68,68,.18);}
+.cc-done-badge{
+  font-size:.54rem;font-weight:800;letter-spacing:.08em;
+  padding:2px 8px;border-radius:20px;
+  background:rgba(45,212,160,.15);color:var(--green);border:1px solid rgba(45,212,160,.3);
+}
+.cc-empty{text-align:center;color:var(--text4);font-size:.72rem;padding:40px 0;font-style:italic;}
+
+/* Add comment form */
+.cp-form{
+  padding:14px 16px;border-top:1px solid var(--rim);flex-shrink:0;
+  background:rgba(0,0,0,.2);
+}
+.cp-form-title{font-size:.65rem;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;}
+.cp-input{
+  width:100%;background:var(--glass2);border:1px solid var(--rim2);
+  border-radius:8px;padding:8px 11px;color:var(--text);
+  font-family:'Plus Jakarta Sans',sans-serif;font-size:.72rem;
+  outline:none;margin-bottom:8px;transition:border-color .2s;
+  resize:none;
+}
+.cp-input:focus{border-color:var(--blue);}
+.cp-input::placeholder{color:var(--text4);}
+.cp-submit{
+  width:100%;padding:9px;border-radius:8px;
+  background:linear-gradient(135deg,var(--blue),var(--violet));
+  border:none;color:#fff;font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:.72rem;font-weight:700;cursor:pointer;
+  transition:opacity .2s;
+}
+.cp-submit:hover{opacity:.85;}
 </style>
 </head>
 <body>
 
+
+<!-- ── Comment Panel ── -->
+<div id="comment-panel">
+  <div class="cp-header">
+    <div class="cp-title">💬 Comments &amp; Requests</div>
+    <div class="cp-close" onclick="toggleComments()">✕</div>
+  </div>
+  <div class="cp-tabs">
+    <div class="cp-tab active" id="tab-open" onclick="switchTab('open')">Open</div>
+    <div class="cp-tab"        id="tab-done" onclick="switchTab('done')">Completed</div>
+  </div>
+  <div class="cp-list" id="cp-list"></div>
+  <div class="cp-form">
+    <div class="cp-form-title">Add a Comment</div>
+    <input    class="cp-input" id="cp-name" type="text" placeholder="Your name…" maxlength="40"/>
+    <textarea class="cp-input" id="cp-note" rows="3"    placeholder="Describe your change request or note…" maxlength="500"></textarea>
+    <button class="cp-submit" onclick="submitComment()">Post Comment</button>
+  </div>
+</div>
 
 <!-- ── Employee Detail Modal ── -->
 <div id="emp-modal-overlay" onclick="handleOverlayClick(event)">
@@ -350,6 +477,9 @@ header{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify
     </div>
     <button class="btn" id="refresh-btn" onclick="loadData(true)">
       <span class="spin">⟳</span> Refresh
+    </button>
+    <button class="btn" id="comment-btn" onclick="toggleComments()" style="gap:6px;">
+      💬 <span>Comments</span> <span id="comment-badge" style="display:none;background:var(--violet);color:#fff;border-radius:20px;padding:0 6px;font-size:.6rem;font-weight:800;"></span>
     </button>
   </div>
 </header>
@@ -1004,6 +1134,111 @@ document.getElementById('canvas-wrap').addEventListener('wheel', e => {
   const delta = e.deltaY < 0 ? ZOOM_STEP : -ZOOM_STEP;
   adjustZoom(delta);
 }, { passive: false });
+
+// ── Comment System ────────────────────────────────────────────
+const STORAGE_KEY = 'uprio_sam_comments';
+let currentTab = 'open';
+
+function loadComments() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }
+  catch { return []; }
+}
+function saveComments(arr) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
+}
+function updateBadge() {
+  const open = loadComments().filter(c => !c.done).length;
+  const badge = document.getElementById('comment-badge');
+  if (open > 0) { badge.textContent = open; badge.style.display = 'inline'; }
+  else           { badge.style.display = 'none'; }
+}
+function fmtTime(ts) {
+  const d = new Date(ts);
+  return d.toLocaleDateString('en-IN',{day:'numeric',month:'short'}) + ' · ' +
+         d.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
+}
+function initials(name) {
+  return (name||'?').trim().split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+}
+
+function renderComments() {
+  const all  = loadComments();
+  const list = all.filter(c => currentTab === 'open' ? !c.done : c.done);
+  const el   = document.getElementById('cp-list');
+
+  if (!list.length) {
+    el.innerHTML = `<div class="cc-empty">${currentTab==='open' ? 'No open comments yet.' : 'No completed comments yet.'}</div>`;
+    return;
+  }
+
+  el.innerHTML = list.map((c, idx) => {
+    const realIdx = all.indexOf(c);
+    const doneAction = c.done
+      ? `<span class="cc-done-badge">✓ Completed</span>`
+      : `<button class="cc-done-btn" onclick="markDone(${realIdx})">✓ Mark Complete</button>`;
+    return `<div class="comment-card${c.done?' done':''}">
+      <div class="cc-top">
+        <div class="cc-name">
+          <div class="cc-avatar">${initials(c.name)}</div>
+          ${c.name}
+        </div>
+        <div class="cc-time">${fmtTime(c.ts)}</div>
+      </div>
+      <div class="cc-note">${c.note.replace(/</g,'&lt;').replace(/\n/g,'<br>')}</div>
+      <div class="cc-actions">
+        ${doneAction}
+        <button class="cc-del-btn" onclick="deleteComment(${realIdx})">🗑 Delete</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function switchTab(tab) {
+  currentTab = tab;
+  document.getElementById('tab-open').classList.toggle('active', tab==='open');
+  document.getElementById('tab-done').classList.toggle('active', tab==='done');
+  renderComments();
+}
+
+function toggleComments() {
+  const panel = document.getElementById('comment-panel');
+  panel.classList.toggle('open');
+  if (panel.classList.contains('open')) renderComments();
+}
+
+function submitComment() {
+  const name = document.getElementById('cp-name').value.trim();
+  const note = document.getElementById('cp-note').value.trim();
+  if (!name) { document.getElementById('cp-name').focus(); return; }
+  if (!note) { document.getElementById('cp-note').focus(); return; }
+
+  const comments = loadComments();
+  comments.unshift({ id: Date.now(), name, note, ts: Date.now(), done: false });
+  saveComments(comments);
+
+  document.getElementById('cp-note').value = '';
+  currentTab = 'open';
+  switchTab('open');
+  updateBadge();
+}
+
+function markDone(idx) {
+  const comments = loadComments();
+  if (comments[idx]) { comments[idx].done = true; saveComments(comments); }
+  renderComments();
+  updateBadge();
+}
+
+function deleteComment(idx) {
+  const comments = loadComments();
+  comments.splice(idx, 1);
+  saveComments(comments);
+  renderComments();
+  updateBadge();
+}
+
+// Init badge on load
+updateBadge();
 
 loadData();
 </script>
