@@ -7,7 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
 <style>
 :root {
-  --ink:#0b0e1a; --ink2:#131729; --ink3:#1b2035; --ink4:#232845;
+  --ink:#12172a; --ink2:#1a1f35; --ink3:#222840; --ink4:#2c3355;
   --glass:rgba(255,255,255,.04); --glass2:rgba(255,255,255,.07);
   --rim:rgba(255,255,255,.08); --rim2:rgba(255,255,255,.13);
   --gold:#e8b84b; --blue:#4a9eff; --blue2:#7bbfff;
@@ -45,29 +45,34 @@ header{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify
   position:relative;z-index:1;
   background:linear-gradient(
     90deg,
-    #fff       0%,
-    #fff       35%,
-    #4a9eff   45%,
-    #2dd4a0   50%,
-    #4a9eff   55%,
-    #fff       65%,
-    #fff      100%
+    #fff      0%,
+    #fff      30%,
+    #4a9eff  42%,
+    #2dd4a0  50%,
+    #4a9eff  58%,
+    #fff      70%,
+    #fff      82%,
+    #2dd4a0  88%,
+    #4a9eff  94%,
+    #fff     100%
   );
-  background-size:200% 100%;
-  background-position:100% 0;
+  background-size:300% 100%;
+  background-position:200% 0;
   -webkit-background-clip:text;
   -webkit-text-fill-color:transparent;
   background-clip:text;
-  animation:uprioShine 8s ease-in-out infinite;
+  animation:uprioShine 12s ease-in-out infinite;
 }
 @keyframes uprioShine{
-  0%   { background-position:200% 0; }
-  40%  { background-position:200% 0; }
-  65%  { background-position:-200% 0; }
-  100% { background-position:-200% 0; }
+  0%   { background-position:300% 0; }
+  30%  { background-position:300% 0; }
+  60%  { background-position:0% 0;   }
+  75%  { background-position:-20% 0; }
+  88%  { background-position:-20% 0; }
+  100% { background-position:300% 0; }
 }
-.logo-text h1{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:var(--text);}
-.logo-text p{font-size:.68rem;color:var(--text3);margin-top:1px;letter-spacing:.03em;}
+.logo-text h1{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;color:var(--text);}
+.logo-text p{font-size:.85rem;color:var(--text3);margin-top:2px;letter-spacing:.03em;}
 .hdr-right{display:flex;align-items:center;gap:10px;}
 #sync-info{font-size:.65rem;color:var(--text3);text-align:right;line-height:1.5;}
 .btn{display:flex;align-items:center;gap:5px;padding:6px 14px;border-radius:8px;border:1px solid var(--rim2);
@@ -247,10 +252,89 @@ header{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify
   border-radius:50%;animation:spinning .8s linear infinite;}
 .loader-txt{font-family:'Playfair Display',serif;font-size:.95rem;color:var(--text2);}
 .loader-sub{font-size:.68rem;color:var(--text4);}
+
+/* ── Employee Detail Modal ───────────────────────────────────── */
+#emp-modal-overlay{
+  position:fixed;inset:0;z-index:400;
+  background:rgba(8,12,20,.78);
+  backdrop-filter:blur(8px);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;
+  transition:opacity .25s;
+}
+#emp-modal-overlay.show{opacity:1;pointer-events:all;}
+#emp-modal{
+  background:linear-gradient(145deg,#131929,#1a2035);
+  border:1px solid rgba(255,255,255,.13);
+  border-radius:20px;
+  padding:28px 32px 24px;
+  min-width:340px;max-width:420px;width:90%;
+  position:relative;
+  box-shadow:0 24px 80px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.04),inset 0 1px 0 rgba(255,255,255,.07);
+  transform:translateY(18px) scale(.96);
+  transition:transform .28s cubic-bezier(.34,1.4,.64,1);
+}
+#emp-modal-overlay.show #emp-modal{transform:translateY(0) scale(1);}
+.emp-close{
+  position:absolute;top:14px;right:16px;
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+  color:var(--text3);width:28px;height:28px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;font-size:.85rem;line-height:1;transition:all .15s;
+}
+.emp-close:hover{background:rgba(239,68,68,.15);border-color:rgba(239,68,68,.4);color:#f87171;}
+.emp-badge{
+  display:inline-block;font-size:.52rem;font-weight:800;letter-spacing:.14em;
+  text-transform:uppercase;padding:2px 10px;border-radius:20px;
+  background:var(--blue);color:var(--ink);margin-bottom:10px;
+}
+.emp-name{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:var(--text);margin-bottom:3px;line-height:1.2;}
+.emp-desig{font-size:.68rem;color:var(--text3);margin-bottom:18px;}
+.emp-grid{display:flex;flex-direction:column;gap:0;}
+.emp-row{display:flex;align-items:center;gap:13px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.05);}
+.emp-row:last-child{border-bottom:none;}
+.emp-icon{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0;}
+.emp-lbl{font-size:.56rem;color:var(--text3);text-transform:uppercase;letter-spacing:.09em;margin-bottom:2px;}
+.emp-val{font-size:.78rem;font-weight:600;color:var(--text);}
+.emp-footer{margin-top:16px;padding-top:12px;border-top:1px solid rgba(255,255,255,.05);font-size:.58rem;color:var(--text4);text-align:center;font-style:italic;}
+/* Clickable member rows */
+.mrow.has-detail{cursor:pointer;}
+.mrow.has-detail:hover{background:rgba(74,158,255,.1) !important;border-radius:6px;}
+.mrow.has-detail .mname{color:var(--blue) !important;text-decoration:underline;text-decoration-color:rgba(74,158,255,.4);text-underline-offset:2px;}
 </style>
 </head>
 <body>
 
+
+<!-- ── Employee Detail Modal ── -->
+<div id="emp-modal-overlay" onclick="handleOverlayClick(event)">
+  <div id="emp-modal">
+    <div class="emp-close" onclick="closeEmpModal()">✕</div>
+    <div class="emp-badge" id="em-badge">SAM</div>
+    <div class="emp-name"  id="em-name">—</div>
+    <div class="emp-desig" id="em-desig">—</div>
+    <div class="emp-grid">
+      <div class="emp-row">
+        <div class="emp-icon" style="background:rgba(74,158,255,.12);">📍</div>
+        <div><div class="emp-lbl">Office Location</div><div class="emp-val" id="em-loc">—</div></div>
+      </div>
+      <div class="emp-row">
+        <div class="emp-icon" style="background:rgba(45,212,160,.12);">📅</div>
+        <div><div class="emp-lbl">Date of Joining</div><div class="emp-val" id="em-doj">—</div></div>
+      </div>
+      <div class="emp-row">
+        <div class="emp-icon" style="background:rgba(155,123,255,.12);">✉️</div>
+        <div><div class="emp-lbl">Official Email</div><div class="emp-val" id="em-email">—</div></div>
+      </div>
+      <div class="emp-row">
+        <div class="emp-icon" style="background:rgba(232,184,75,.12);">👤</div>
+        <div><div class="emp-lbl">Reporting To</div><div class="emp-val" id="em-manager">—</div></div>
+      </div>
+
+    </div>
+    <div class="emp-footer">Press Esc or click outside to close</div>
+  </div>
+</div>
 <div id="page-loader">
   <div class="ring"></div>
   <div class="loader-txt">Loading SAM Mind Map</div>
@@ -438,6 +522,70 @@ function resolveStatus(name, statusCell, dojCell) {
   return 'a';
 }
 
+// ── Employee DB (updated from Employeedata sheet) ──
+const EMP_DB = {
+  "abhishek tiwari": {fullName:"Abhishek Tiwari",desig:"School Account Manager",location:"Rohini",doj:"28 Aug 2025",email:"abhishek.tiwari@uprio.com",manager:"Aman Chaudhary"},
+  "varun dixit": {fullName:"Varun Dixit",desig:"School Account Manager",location:"Rohini",doj:"01 Sep 2025",email:"varun.dixit@uprio.com",manager:"Aman Chaudhary"},
+  "aayush panghal": {fullName:"Aayush Panghal",desig:"School Account Manager",location:"Rohini",doj:"14 Oct 2025",email:"aayush.panghal@uprio.com",manager:"Aman Chaudhary"},
+  "aditya gupta": {fullName:"Aditya Gupta",desig:"School Account Manager",location:"Rohini",doj:"21 Nov 2025",email:"aditya.gupta@uprio.com",manager:"Aman Chaudhary"},
+  "kuljot singh": {fullName:"Kuljot Singh",desig:"School Account Manager",location:"Rohini",doj:"19 Jan 2026",email:"kuljot.singh@uprio.com",manager:"Aman Chaudhary"},
+  "himanshu verma": {fullName:"Himanshu Verma",desig:"School Account Manager",location:"Rohini",doj:"16 Feb 2026",email:"himanshu.verma@uprio.com",manager:"Aman Chaudhary"},
+  "akhilesh agarwal": {fullName:"Akhilesh Agarwal",desig:"School Account Manager",location:"Rohini",doj:"24 Feb 2026",email:"akhilesh.agarwal@uprio.com",manager:"Aman Chaudhary"},
+  "ankur verma": {fullName:"Ankur Verma",desig:"School Account Manager",location:"Rohini",doj:"16 Feb 2026",email:"ankur.verma@uprio.com",manager:"Aman Chaudhary"},
+  "firoz raza ansari": {fullName:"Firoz Raza Ansari",desig:"School Account Manager",location:"Rohini",doj:"02 Mar 2026",email:"firoz.raza.ansari@uprio.com",manager:"Aman Chaudhary"},
+  "govind varshney": {fullName:"Govind Varshney",desig:"School Account Manager",location:"Rohini",doj:"09 Mar 2026",email:"govind.varshney@uprio.com",manager:"Aman Chaudhary"},
+  "ritik raj": {fullName:"Ritik Raj",desig:"School Account Manager",location:"Noida",doj:"18 Nov 2024",email:"ritik.raj@uprio.com",manager:"Chinmay Singh"},
+  "devansh gupta": {fullName:"Devansh Gupta",desig:"School Account Manager",location:"Noida",doj:"17 Mar 2025",email:"devansh.gupta@uprio.com",manager:"Chinmay Singh"},
+  "ayush raina": {fullName:"Ayush Raina",desig:"School Account Manager",location:"Noida",doj:"01 Jul 2025",email:"ayush.raina@uprio.com",manager:"Chinmay Singh"},
+  "sahil sandhu": {fullName:"Sahil Sandhu",desig:"School Account Manager",location:"Noida",doj:"04 Nov 2025",email:"sahil.sandhu@uprio.com",manager:"Chinmay Singh"},
+  "shovik julka": {fullName:"Shovik Julka",desig:"School Account Manager",location:"Noida",doj:"05 Jan 2026",email:"shovik.julka@uprio.com",manager:"Chinmay Singh"},
+  "aditya pathak": {fullName:"Aditya Pathak",desig:"School Account Manager",location:"Noida",doj:"19 Jan 2026",email:"aditya.pathak@uprio.com",manager:"Chinmay Singh"},
+  "aryan yadav": {fullName:"Aryan Yadav",desig:"School Account Manager",location:"Noida",doj:"19 Jan 2026",email:"aryan.yadav@uprio.com",manager:"Chinmay Singh"},
+  "thakur virat singh": {fullName:"Thakur Virat Singh",desig:"School Account Manager",location:"Noida",doj:"18 Mar 2026",email:"thakur.virat.singh@uprio.com",manager:"Chinmay Singh"},
+  "hemanth u": {fullName:"Hemanth U",desig:"SAM Manager",location:"Bengaluru Office 1",doj:"21 Dec 2023",email:"hemanth.u@uprio.com",manager:"Gajender Singh Anand"},
+  "chinmay singh": {fullName:"Chinmay Singh",desig:"SAM Manager",location:"Noida",doj:"17 Mar 2025",email:"chinmay.singh@uprio.com",manager:"Gajender Singh Anand"},
+  "aman chaudhary": {fullName:"Aman Chaudhary",desig:"SAM Manager",location:"Rohini",doj:"02 Sep 2025",email:"aman.chaudhary@uprio.com",manager:"Gajender Singh Anand"},
+  "ravi kumar": {fullName:"Ravi Kumar",desig:"SAM Manager",location:"Dwarka",doj:"12 Mar 2026",email:"ravi.kumar@uprio.com",manager:"Gajender Singh Anand"},
+  "naman tiwari": {fullName:"Naman Tiwari",desig:"SAM Manager",location:"Gurgaon",doj:"18 Mar 2026",email:"naman.tiwari@uprio.com",manager:"Gajender Singh Anand"},
+  "bharath gowda": {fullName:"Bharath Gowda",desig:"School Account Manager",location:"Bengaluru Office 1",doj:"23 Aug 2024",email:"bharath.gowda@uprio.com",manager:"Hemanth U"},
+  "devansh tyagi": {fullName:"Devansh Tyagi",desig:"School Account Manager",location:"Bengaluru Office 1",doj:"01 Dec 2025",email:"devansh.tyagi@uprio.com",manager:"Hemanth U"},
+  "aman singh": {fullName:"Aman Singh",desig:"School Account Manager",location:"Bengaluru Office 1",doj:"16 Dec 2025",email:"aman.singh@uprio.com",manager:"Hemanth U"},
+  "b sharath kumar": {fullName:"B Sharath Kumar",desig:"School Account Manager",location:"Bengaluru Office 1",doj:"24 Dec 2025",email:"b.sharath.kumar@uprio.com",manager:"Hemanth U"},
+  "suhan s": {fullName:"Suhan S",desig:"School Account Manager",location:"Bengaluru Office 1",doj:"27 Jan 2026",email:"suhan.s@uprio.com",manager:"Hemanth U"},
+  "monil shah": {fullName:"Monil Shah",desig:"School Account Manager",location:"Bengaluru Office 1",doj:"09 Feb 2026",email:"monil.shah@uprio.com",manager:"Hemanth U"},
+  "ajay n": {fullName:"AJAY N",desig:"School Account Manager",location:"Bengaluru Office 1",doj:"16 Feb 2026",email:"ajay.n@uprio.com",manager:"Hemanth U"},
+  "gajender singh anand": {fullName:"Gajender Singh Anand",desig:"Vice President",location:"North and Bengaluru",doj:"04 Sep 2024",email:"gajender.singh.anand@uprio.com",manager:"Mrinal Mohit"},
+  "rajamani venketesh": {fullName:"Rajamani Venketesh",desig:"Vice President",location:"South",doj:"06 Jan 2026",email:"rajamani.venketesh@uprio.com",manager:"Mrinal Mohit"},
+  "paramasivan rajan": {fullName:"Paramasivan Rajan",desig:"School Account Manager",location:"Chennai 1",doj:"03 Feb 2026",email:"paramasivan.rajan@uprio.com",manager:"Rajamani Venketesh"},
+  "anish kumar": {fullName:"Anish Kumar",desig:"School Account Manager",location:"Chennai 1",doj:"10 Feb 2026",email:"anish.kumar@uprio.com",manager:"Rajamani Venketesh"},
+  "rajkumar s": {fullName:"Rajkumar S",desig:"School Account Manager",location:"Chennai 1",doj:"13 Feb 2026",email:"rajkumar.s@uprio.com",manager:"Rajamani Venketesh"},
+  "sathish kumar r": {fullName:"Sathish Kumar R",desig:"School Account Manager",location:"Chennai 1",doj:"16 Feb 2026",email:"sathish.kumar.r@uprio.com",manager:"Rajamani Venketesh"},
+  "maganti vishnuvardhan": {fullName:"Maganti Vishnuvardhan",desig:"SAM Manager",location:"Hyderabad Office 1",doj:"09 Mar 2026",email:"maganti.vishnuvardhan@uprio.com",manager:"Rajamani Venketesh"},
+  "akshith mashetty": {fullName:"Akshith Mashetty",desig:"SAM Manager",location:"Hyderabad Office 2",doj:"09 Mar 2026",email:"akshith.mashetty@uprio.com",manager:"Rajamani Venketesh"},
+  "akash b": {fullName:"Akash B",desig:"SAM Manager",location:"Chennai Office 2",doj:"Yet to Join",email:"akash.b@uprio.com",manager:"Rajamani Venketesh"},
+};
+
+function openEmpModal(name) {
+  const key = (name || '').trim().toLowerCase();
+  const e = EMP_DB[key] || {fullName:name,desig:'N/A',location:'N/A',doj:'N/A',email:'N/A',manager:'N/A'};
+  const bm = {'School Account Manager':'SAM','Assoc. School Account Manager':'ASAM','SAM Manager':'SAMM','Vice President':'VP'};
+  document.getElementById('em-badge').textContent   = bm[e.desig] || e.desig || 'SAM';
+  document.getElementById('em-name').textContent    = e.fullName;
+  document.getElementById('em-desig').textContent   = e.desig;
+  document.getElementById('em-loc').textContent     = e.location;
+  document.getElementById('em-doj').textContent     = e.doj;
+  document.getElementById('em-email').textContent   = e.email;
+  document.getElementById('em-manager').textContent = e.manager;
+  document.getElementById('emp-modal-overlay').classList.add('show');
+}
+function closeEmpModal() {
+  document.getElementById('emp-modal-overlay').classList.remove('show');
+}
+function handleOverlayClick(ev) {
+  if (ev.target === document.getElementById('emp-modal-overlay')) closeEmpModal();
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeEmpModal(); });
+
 // ── Render member row ─────────────────────────────────────────
 function renderMember(m, dotColor) {
   const st = resolveStatus(m.n, m.status, m.doj);
@@ -452,9 +600,13 @@ function renderMember(m, dotColor) {
     dn = m.n;
     tag = `<span class="mtag mtag-a">Active</span>`;
   }
-  return `<div class="mrow">
+  const isNamed   = !!(m.n && m.n.trim() && m.n.trim().toUpperCase() !== 'TBD');
+  const clickClass = isNamed ? ' has-detail' : '';
+  const clickAttr  = isNamed ? ` onclick="openEmpModal(this.dataset.name);event.stopPropagation();" data-name="${(m.n||'').replace(/"/g,'&quot;')}"` : '';
+  const tip        = isNamed ? `Click to view ${m.n}'s profile` : (m.n || 'Open');
+  return `<div class="mrow${clickClass}"${clickAttr}>
     <div class="mdot" style="background:${dot}"></div>
-    <div class="${nameClass}" title="${m.n || 'Open'}">${dn}</div>
+    <div class="${nameClass}" title="${tip}">${dn}</div>
     ${tag}
   </div>`;
 }
@@ -463,19 +615,19 @@ function renderMember(m, dotColor) {
 function renderOffice(o) {
   const oid = 'ofc_' + o.id;
 
-  // Pad slots: Rohini = 9 SAM + 6 ASAM = 16 total. All others = 8 SAM + 6 ASAM = 14 total.
+  // Rohini = 9 SAM + 6 ASAM = 15 slots. All others = 8 SAM + 6 ASAM = 14 slots.
   const samSlots  = o.id === 'rohini' ? 9 : 8;
   const asamSlots = 6;
-  const sams  = [...o.sams];
-  const asams = [...o.asams];
+  const sams  = [...o.sams].slice(0, samSlots);
+  const asams = [...o.asams].slice(0, asamSlots);
   while (sams.length  < samSlots)  sams.push( { desig:'SAM',  n:'', status:'TBD', doj:'' });
   while (asams.length < asamSlots) asams.push({ desig:'ASAM', n:'', status:'TBD', doj:'' });
 
   const sammSt = resolveStatus(o.samm.n, o.samm.status, o.samm.doj);
   let pill;
   if      (sammSt === 't') pill = `<div class="samm-pill pill-t"><span class="pip"></span>SAMM: TBD</div>`;
-  else if (sammSt === 'y') pill = `<div class="samm-pill pill-y"><span class="pip"></span>SAMM: ${o.samm.n} &nbsp;·&nbsp; YTJ ${fmtDate(o.samm.doj)||o.samm.doj}</div>`;
-  else                     pill = `<div class="samm-pill pill-a"><span class="pip"></span>SAMM: ${o.samm.n}</div>`;
+  else if (sammSt === 'y') pill = `<div class="samm-pill pill-y" style="cursor:pointer;" onclick="openEmpModal('${o.samm.n}');event.stopPropagation();"><span class="pip"></span>SAMM: ${o.samm.n} &nbsp;·&nbsp; YTJ ${fmtDate(o.samm.doj)||o.samm.doj} ↗</div>`;
+  else                     pill = `<div class="samm-pill pill-a" style="cursor:pointer;" onclick="openEmpModal('${o.samm.n}');event.stopPropagation();"><span class="pip"></span>SAMM: ${o.samm.n} ↗</div>`;
 
   const sammOn  = sammSt === 'a' ? 1 : 0;
   const sammYTJ = sammSt === 'y' ? 1 : 0;
@@ -561,16 +713,48 @@ function renderStats(offices) {
 }
 
 // ── Build tree ────────────────────────────────────────────────
+function rmStats(offices) {
+  let samm = 0, sam = 0, asam = 0;
+  offices.forEach(o => {
+    const samSlots  = o.id === 'rohini' ? 9 : 8;
+    const asamSlots = 6;
+    const sams  = [...o.sams].slice(0, samSlots);
+    const asams = [...o.asams].slice(0, asamSlots);
+    while (sams.length  < samSlots)  sams.push({n:'',status:'TBD',doj:''});
+    while (asams.length < asamSlots) asams.push({n:'',status:'TBD',doj:''});
+    if (resolveStatus(o.samm.n, o.samm.status, o.samm.doj) === 'a') samm++;
+    sam  += sams.filter( m => resolveStatus(m.n, m.status, m.doj) === 'a').length;
+    asam += asams.filter(m => resolveStatus(m.n, m.status, m.doj) === 'a').length;
+  });
+  return { samm, sam, asam };
+}
+
+function statBadges(s, colorClass) {
+  const pill = (label, val, color) =>
+    `<span style="display:inline-flex;align-items:center;gap:4px;font-size:.54rem;font-weight:700;
+      padding:2px 8px;border-radius:20px;background:${color}18;border:1px solid ${color}44;color:${color};">
+      <span style="width:5px;height:5px;border-radius:50%;background:${color};display:inline-block;flex-shrink:0;"></span>
+      ${val} ${label}
+    </span>`;
+  return `<div style="display:flex;gap:5px;justify-content:center;flex-wrap:wrap;margin-top:8px;">
+    ${pill('SAMM', s.samm, '#34d399')}
+    ${pill('SAM',  s.sam,  '#4a9eff')}
+    ${pill('ASAM', s.asam, '#9b7bff')}
+  </div>`;
+}
+
 function buildTree(offices) {
   const gO = offices.filter(o => o.rm === 'gajender');
   const rO = offices.filter(o => o.rm === 'rajamani');
   const ofcRow = arr => `<div class="offices-row">${arr.map(renderOffice).join('')}</div>`;
+  const gStats = rmStats(gO);
+  const rStats = rmStats(rO);
 
   document.getElementById('canvas').innerHTML = `
     <!-- HOD — centred -->
     <div class="hod-node">
       <div class="hod-name">Mrinal Mohit</div>
-      <div class="hod-role">Head of Department · SAM Division</div>
+      <div class="hod-role">Head of Department</div>
     </div>
 
     <!-- Vertical drop from HOD -->
@@ -586,6 +770,7 @@ function buildTree(offices) {
           <div class="rm-tag">Regional Manager · North &amp; Bangalore</div>
           <div class="rm-name">Gajender Singh Anand</div>
           <div class="rm-sub">${gO.length} Offices under management</div>
+          ${statBadges(gStats, 'g')}
         </div>
         <div class="vl" style="height:28px;background:linear-gradient(to bottom,rgba(74,158,255,.2),rgba(74,158,255,.04))"></div>
         ${ofcRow(gO)}
@@ -598,6 +783,7 @@ function buildTree(offices) {
           <div class="rm-tag">Regional Manager · South</div>
           <div class="rm-name">Rajamani Venketesh</div>
           <div class="rm-sub">${rO.length} Offices under management</div>
+          ${statBadges(rStats, 'r')}
         </div>
         <div class="vl" style="height:28px;background:linear-gradient(to bottom,rgba(45,212,160,.2),rgba(45,212,160,.04))"></div>
         ${ofcRow(rO)}
