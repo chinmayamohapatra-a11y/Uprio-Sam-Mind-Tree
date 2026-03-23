@@ -46,30 +46,23 @@ header{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify
   background:linear-gradient(
     90deg,
     #fff      0%,
-    #fff      30%,
-    #4a9eff  42%,
+    #fff      35%,
+    #4a9eff  46%,
     #2dd4a0  50%,
-    #4a9eff  58%,
-    #fff      70%,
-    #fff      82%,
-    #2dd4a0  88%,
-    #4a9eff  94%,
+    #4a9eff  54%,
+    #fff      65%,
     #fff     100%
   );
-  background-size:300% 100%;
+  background-size:250% 100%;
   background-position:200% 0;
   -webkit-background-clip:text;
   -webkit-text-fill-color:transparent;
   background-clip:text;
-  animation:uprioShine 12s ease-in-out infinite;
+  animation:uprioShine 16s linear infinite;
 }
 @keyframes uprioShine{
-  0%   { background-position:300% 0; }
-  30%  { background-position:300% 0; }
-  60%  { background-position:0% 0;   }
-  75%  { background-position:-20% 0; }
-  88%  { background-position:-20% 0; }
-  100% { background-position:300% 0; }
+  0%   { background-position:250% 0; }
+  100% { background-position:-50% 0; }
 }
 .logo-text h1{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;color:var(--text);}
 .logo-text p{font-size:.85rem;color:var(--text3);margin-top:2px;letter-spacing:.03em;}
@@ -96,25 +89,21 @@ header{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify
   display:inline-flex;align-items:center;justify-content:center;font-size:.55rem;font-weight:800;flex-shrink:0;}
 
 /* Dashboard */
-.dashboard{display:grid;grid-template-columns:repeat(7,1fr);border-bottom:1px solid var(--rim);background:rgba(19,23,41,.6);}
+.dashboard{display:grid;grid-template-columns:repeat(5,1fr);border-bottom:1px solid var(--rim);background:rgba(19,23,41,.6);}
 .dash-cell{padding:16px 20px;border-right:1px solid var(--rim);position:relative;overflow:hidden;}
 .dash-cell:last-child{border-right:none;}
 .dash-cell::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;opacity:.5;}
 .dash-cell:nth-child(1)::after{background:var(--violet);}
 .dash-cell:nth-child(2)::after{background:var(--green);}
 .dash-cell:nth-child(3)::after{background:var(--blue);}
-.dash-cell:nth-child(4)::after{background:var(--violet);}
-.dash-cell:nth-child(5)::after{background:var(--amber);}
-.dash-cell:nth-child(6)::after{background:var(--amber);}
-.dash-cell:nth-child(7)::after{background:var(--gold);}
+.dash-cell:nth-child(4)::after{background:var(--amber);}
+.dash-cell:nth-child(5)::after{background:var(--gold);}
 .dash-num{font-family:'Playfair Display',serif;font-size:1.7rem;font-weight:700;line-height:1;}
 .dash-cell:nth-child(1) .dash-num{background:linear-gradient(135deg,#a78bfa,#7c6af5);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 .dash-cell:nth-child(2) .dash-num{background:linear-gradient(135deg,#2dd4a0,#6ee7c7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 .dash-cell:nth-child(3) .dash-num{background:linear-gradient(135deg,#4a9eff,#7bbfff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.dash-cell:nth-child(4) .dash-num{background:linear-gradient(135deg,#9b7bff,#c4b5fd);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.dash-cell:nth-child(5) .dash-num{background:linear-gradient(135deg,#ffb347,#ffd280);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.dash-cell:nth-child(6) .dash-num{background:linear-gradient(135deg,#ffb347,#ffd280);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.dash-cell:nth-child(7) .dash-num{background:linear-gradient(135deg,#e8b84b,#f5d07a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.dash-cell:nth-child(4) .dash-num{background:linear-gradient(135deg,#ffb347,#ffd280);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.dash-cell:nth-child(5) .dash-num{background:linear-gradient(135deg,#e8b84b,#f5d07a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 .dash-label{font-size:.58rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-top:5px;}
 
 /* Legend */
@@ -379,11 +368,9 @@ header{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify
 
 <div class="dashboard">
   <div class="dash-cell"><div class="dash-num" id="d0">11</div><div class="dash-label">Total Offices</div></div>
-  <div class="dash-cell"><div class="dash-num" id="d1">—</div><div class="dash-label">SAMMs Onboard</div></div>
-  <div class="dash-cell"><div class="dash-num" id="d2">—</div><div class="dash-label">SAMs Active</div></div>
-  <div class="dash-cell"><div class="dash-num" id="d3">—</div><div class="dash-label">ASAMs Active</div></div>
-  <div class="dash-cell"><div class="dash-num" id="d5">—</div><div class="dash-label">SAMs Yet to Join</div></div>
-  <div class="dash-cell"><div class="dash-num" id="d6">—</div><div class="dash-label">ASAMs Yet to Join</div></div>
+  <div class="dash-cell"><div class="dash-num" id="d1">—</div><div class="dash-label">SAMM (SAM Manager) Onboard</div></div>
+  <div class="dash-cell"><div class="dash-num" id="d2">—</div><div class="dash-label">SAM (School Account Manager) Active</div></div>
+  <div class="dash-cell"><div class="dash-num" id="d5">—</div><div class="dash-label">SAM (School Account Manager) Yet to Join</div></div>
   <div class="dash-cell"><div class="dash-num" id="d4">—</div><div class="dash-label">Overall Fill %</div></div>
 </div>
 
@@ -705,10 +692,8 @@ function renderStats(offices) {
   const pct = Math.round((fill / slots) * 100);
   document.getElementById('d0').textContent = offices.length;
   document.getElementById('d1').textContent = `${samm}/${offices.length}`;
-  document.getElementById('d2').textContent = sam;
-  document.getElementById('d3').textContent = asam;
-  document.getElementById('d5').textContent = samYTJ;
-  document.getElementById('d6').textContent = asamYTJ;
+  document.getElementById('d2').textContent = sam + asam;   // SAM + ASAM combined
+  document.getElementById('d5').textContent = samYTJ + asamYTJ; // SAM + ASAM YTJ combined
   document.getElementById('d4').textContent = `${pct}%`;
 }
 
@@ -751,21 +736,13 @@ function buildTree(offices) {
   const rStats = rmStats(rO);
 
   document.getElementById('canvas').innerHTML = `
-    <!-- HOD — centred -->
-    <div class="hod-node">
-      <div class="hod-name">Mrinal Mohit</div>
-      <div class="hod-role">Head of Department</div>
-    </div>
 
-    <!-- Vertical drop from HOD -->
-    <div class="vl" style="height:36px;background:linear-gradient(to bottom,rgba(155,123,255,.5),rgba(155,123,255,.15))"></div>
-
-    <!-- Two branches side by side -->
+    <!-- Two branches side by side, Mrinal absolutely centred above connector -->
     <div id="rm-row-wrap" style="display:flex;align-items:flex-start;position:relative;">
 
       <!-- GAJENDER branch -->
       <div class="rm-branch" id="branch-gaj" style="padding:0 80px 0 0;">
-        <div id="vl-gaj" style="width:2px;height:28px;background:linear-gradient(to bottom,rgba(74,158,255,.5),rgba(74,158,255,.15));margin:0 auto;"></div>
+        <div id="vl-gaj" style="width:2px;height:36px;background:linear-gradient(to bottom,rgba(74,158,255,.5),rgba(74,158,255,.15));margin:0 auto;"></div>
         <div class="rm-node g">
           <div class="rm-tag">Regional Manager · North &amp; Bangalore</div>
           <div class="rm-name">Gajender Singh Anand</div>
@@ -778,7 +755,7 @@ function buildTree(offices) {
 
       <!-- RAJAMANI branch -->
       <div class="rm-branch" id="branch-raj" style="padding:0 0 0 80px;">
-        <div id="vl-raj" style="width:2px;height:28px;background:linear-gradient(to bottom,rgba(45,212,160,.5),rgba(45,212,160,.15));margin:0 auto;"></div>
+        <div id="vl-raj" style="width:2px;height:36px;background:linear-gradient(to bottom,rgba(45,212,160,.5),rgba(45,212,160,.15));margin:0 auto;"></div>
         <div class="rm-node r">
           <div class="rm-tag">Regional Manager · South</div>
           <div class="rm-name">Rajamani Venketesh</div>
@@ -789,7 +766,10 @@ function buildTree(offices) {
         ${ofcRow(rO)}
       </div>
 
-    </div>`;
+    </div>
+
+    <!-- rm-row-wrap needed for drawConnector -->
+    <div id="hod-anchor" style="display:none;"></div>`;
 
   // After render: draw the horizontal bridge line + centre the view
   requestAnimationFrame(() => {
@@ -805,48 +785,56 @@ function buildTree(offices) {
 
 // ── Draw SVG connector line between the two RM vertical drops ──
 function drawConnector() {
-  // Remove any old connector
   const old = document.getElementById('rm-connector');
   if (old) old.remove();
+  const oldHod = document.getElementById('hod-floating');
+  if (oldHod) oldHod.remove();
 
-  const wrap   = document.getElementById('rm-row-wrap');
-  const gajVL  = document.getElementById('vl-gaj');
-  const rajVL  = document.getElementById('vl-raj');
+  const wrap  = document.getElementById('rm-row-wrap');
+  const gajVL = document.getElementById('vl-gaj');
+  const rajVL = document.getElementById('vl-raj');
   if (!wrap || !gajVL || !rajVL) return;
 
   const wrapRect = wrap.getBoundingClientRect();
   const gRect    = gajVL.getBoundingClientRect();
   const rRect    = rajVL.getBoundingClientRect();
 
-  // X positions of the two vertical lines (centre of each 2px line)
+  // X positions of both vertical lines
   const x1 = gRect.left + gRect.width / 2 - wrapRect.left;
   const x2 = rRect.left + rRect.width / 2 - wrapRect.left;
-  // Y = bottom of the vertical drops (they are both 28px tall)
-  const y  = gRect.bottom - wrapRect.top;
+  const y  = gRect.bottom - wrapRect.top;  // bottom of the 36px vl drops
+  const midX = (x1 + x2) / 2;             // exact midpoint
 
+  // Draw the gradient line
   const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
   svg.id = 'rm-connector';
-  svg.style.cssText = `position:absolute;top:0;left:0;width:${wrapRect.width}px;height:${y + 4}px;pointer-events:none;overflow:visible;`;
-
+  svg.style.cssText = `position:absolute;top:0;left:0;width:${wrapRect.width}px;height:${y+4}px;pointer-events:none;overflow:visible;z-index:0;`;
   const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
   defs.innerHTML = `<linearGradient id="hgrad" x1="0%" y1="0%" x2="100%" y2="0%">
     <stop offset="0%" stop-color="rgba(74,158,255,.6)"/>
-    <stop offset="50%" stop-color="rgba(155,123,255,.4)"/>
+    <stop offset="50%" stop-color="rgba(155,123,255,.5)"/>
     <stop offset="100%" stop-color="rgba(45,212,160,.6)"/>
   </linearGradient>`;
   svg.appendChild(defs);
-
   const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-  line.setAttribute('x1', x1);
-  line.setAttribute('y1', y);
-  line.setAttribute('x2', x2);
-  line.setAttribute('y2', y);
+  line.setAttribute('x1', x1); line.setAttribute('y1', y);
+  line.setAttribute('x2', x2); line.setAttribute('y2', y);
   line.setAttribute('stroke', 'url(#hgrad)');
-  line.setAttribute('stroke-width', '1');
+  line.setAttribute('stroke-width', '1.5');
   svg.appendChild(line);
-
   wrap.style.position = 'relative';
   wrap.appendChild(svg);
+
+  // Inject HOD node absolutely centred on the line midpoint
+  const hodW = 260; // min-width of hod-node
+  const hodEl = document.createElement('div');
+  hodEl.id = 'hod-floating';
+  hodEl.style.cssText = `position:absolute;left:${midX}px;top:${y - 30}px;transform:translateX(-50%);z-index:10;`;
+  hodEl.innerHTML = `<div class="hod-node" style="cursor:pointer;min-width:${hodW}px;" onclick="openEmpModal('Mrinal Mohit')">
+    <div class="hod-name">Mrinal Mohit</div>
+    <div class="hod-role">Head of Department</div>
+  </div>`;
+  wrap.appendChild(hodEl);
 }
 
 // ── JSONP fetch — bypasses CORS for Google Apps Script ────────
