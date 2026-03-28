@@ -561,6 +561,8 @@ const STATIC_OFFICES = [
       mk('SAM','Aditya Pathak',       'Active','24 Dec 2025'),
       mk('SAM','Aryan Yadav',         'Active','05 Jan 2026'),
       mk('SAM','Thakur Virat Singh',  'Yet to join','06 Jan 2026'),
+      tbd('SAM'),
+      tbd('SAM'),
     ],
     asams: emp('ASAM',6) },
   { id:'rohini', name:'Rohini', rm:'gajender',
@@ -733,7 +735,7 @@ function renderOffice(o) {
   const oid = 'ofc_' + o.id;
 
   // Rohini = 9 SAM + 6 ASAM = 15 slots. All others = 8 SAM + 6 ASAM = 14 slots.
-  const samSlots  = o.id === 'rohini' ? 9 : 8;
+  const samSlots  = o.id === 'rohini' ? 9 : o.id === 'noida' ? 10 : 8;
   const asamSlots = 6;
   const sams  = [...o.sams].slice(0, samSlots);
   const asams = [...o.asams].slice(0, asamSlots);
@@ -799,7 +801,7 @@ function toggle(id) {
 function renderStats(offices) {
   let samm=0, sam=0, asam=0, samYTJ=0, asamYTJ=0, fill=0, slots=0;
   offices.forEach(o => {
-    const samSlots  = o.id === 'rohini' ? 9 : 8;
+    const samSlots  = o.id === 'rohini' ? 9 : o.id === 'noida' ? 10 : 8;
     const asamSlots = 6;
     const sams  = [...o.sams];  while(sams.length  < samSlots)  sams.push({n:'',status:'TBD',doj:''});
     const asams = [...o.asams]; while(asams.length < asamSlots) asams.push({n:'',status:'TBD',doj:''});
@@ -831,7 +833,7 @@ function renderStats(offices) {
 function rmStats(offices) {
   let samm = 0, sam = 0, asam = 0;
   offices.forEach(o => {
-    const samSlots  = o.id === 'rohini' ? 9 : 8;
+    const samSlots  = o.id === 'rohini' ? 9 : o.id === 'noida' ? 10 : 8;
     const asamSlots = 6;
     const sams  = [...o.sams].slice(0, samSlots);
     const asams = [...o.asams].slice(0, asamSlots);
